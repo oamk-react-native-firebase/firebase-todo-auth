@@ -20,14 +20,14 @@ export default function Todo({ navigation }) {
     .equalTo(currentUserEmail)
     .on('child_added', snapshot => {
       let userKey = snapshot.key;
-        setUserKey(userKey);
-        setNickname(snapshot.val().nickname);
-        firebase.database().ref(TODOS_REF + "/" + userKey).on('value', querySnapShot => {
-          let data = querySnapShot.val() ? querySnapShot.val() : {};
-          let todoItems = {...data};
-          setTodos(todoItems);
-        });
+      setUserKey(userKey);
+      setNickname(snapshot.val().nickname);
+      firebase.database().ref(TODOS_REF + "/" + userKey).on('value', querySnapShot => {
+        let data = querySnapShot.val() ? querySnapShot.val() : {};
+        let todoItems = {...data};
+        setTodos(todoItems);
       });
+    });
   }, []);
 
   function addNewTodo() {
