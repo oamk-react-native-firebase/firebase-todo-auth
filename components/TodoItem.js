@@ -11,7 +11,7 @@ export const TodoItem = ({todoItem: {todoItem: title, done}, id, userKey}) => {
 
   const onCheck = () => {
     setDone(!doneState);
-    firebase.database().ref(TODOS_REF + "/" + userKey).update({
+    firebase.database().ref(TODOS_REF).child(userKey).update({
       [id]: {
         todoItem: title, 
         done: !doneState,
@@ -20,7 +20,7 @@ export const TodoItem = ({todoItem: {todoItem: title, done}, id, userKey}) => {
   };
 
   const onRemove = () => {
-    firebase.database().ref(TODOS_REF + "/" + userKey + "/" + [id]).remove();
+    firebase.database().ref(TODOS_REF).child(userKey).child(id).remove();
   };
 
   return (

@@ -19,20 +19,19 @@ export default function Todo({ navigation }) {
     .orderByChild('email')
     .equalTo(currentUserEmail)
     .on('child_added', snapshot => {
-      let userKey = snapshot.key;
-      setUserKey(userKey);
-      setNickname(snapshot.val().nickname);
-      firebase.database().ref(TODOS_REF + "/" + userKey).on('value', querySnapShot => {
+      firebase.database().ref(TODOS_REF).child(snapshot.key).on('value', querySnapShot => {
         let data = querySnapShot.val() ? querySnapShot.val() : {};
         let todoItems = {...data};
         setTodos(todoItems);
+        setUserKey(snapshot.key);
+        setNickname(snapshot.val().nickname);
       });
     });
   }, []);
 
   function addNewTodo() {
     if (newTodo.trim() !== "") {
-      firebase.database().ref(TODOS_REF + "/" + userKey).push({
+      firebase.database().ref(TODOS_REF).child(userKey).push({
         done: false,
         todoItem: newTodo
       })
@@ -41,7 +40,7 @@ export default function Todo({ navigation }) {
   }
 
   function removeTodos() {
-    firebase.database().ref(TODOS_REF + userKey).remove();
+    firebase.database().ref(TODOS_REF).child(userKey).remove();
   }
 
   const handlePress = () => {
